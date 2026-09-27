@@ -1,0 +1,309 @@
+{
+  "functions": [
+    {
+      "name": "get",
+      "file": "app/cache.py",
+      "line": 6,
+      "calls_in_order": [
+        "_store.get"
+      ],
+      "calls_with_lines": [
+        {
+          "name": "_store.get",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "name": "set",
+      "file": "app/cache.py",
+      "line": 10,
+      "calls_in_order": [],
+      "calls_with_lines": []
+    },
+    {
+      "name": "delete",
+      "file": "app/cache.py",
+      "line": 14,
+      "calls_in_order": [
+        "_store.pop"
+      ],
+      "calls_with_lines": [
+        {
+          "name": "_store.pop",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "name": "clear",
+      "file": "app/cache.py",
+      "line": 18,
+      "calls_in_order": [
+        "_store.clear"
+      ],
+      "calls_with_lines": [
+        {
+          "name": "_store.clear",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "name": "init_db",
+      "file": "app/database.py",
+      "line": 28,
+      "calls_in_order": [
+        "Base.metadata.create_all"
+      ],
+      "calls_with_lines": [
+        {
+          "name": "Base.metadata.create_all",
+          "line": 29
+        }
+      ]
+    },
+    {
+      "name": "get_db",
+      "file": "app/database.py",
+      "line": 32,
+      "calls_in_order": [
+        "SessionLocal",
+        "db.close"
+      ],
+      "calls_with_lines": [
+        {
+          "name": "SessionLocal",
+          "line": 33
+        },
+        {
+          "name": "db.close",
+          "line": 37
+        }
+      ]
+    },
+    {
+      "name": "save_order",
+      "file": "app/database.py",
+      "line": 40,
+      "calls_in_order": [
+        "Order",
+        "db.add",
+        "db.commit",
+        "db.refresh"
+      ],
+      "calls_with_lines": [
+        {
+          "name": "Order",
+          "line": 41
+        },
+        {
+          "name": "db.add",
+          "line": 42
+        },
+        {
+          "name": "db.commit",
+          "line": 43
+        },
+        {
+          "name": "db.refresh",
+          "line": 44
+        }
+      ]
+    },
+    {
+      "name": "on_startup",
+      "file": "app/main.py",
+      "line": 12,
+      "calls_in_order": [
+        "app.on_event",
+        "init_db"
+      ],
+      "calls_with_lines": [
+        {
+          "name": "app.on_event",
+          "line": 11
+        },
+        {
+          "name": "init_db",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "name": "create_payment",
+      "file": "app/main.py",
+      "line": 32,
+      "calls_in_order": [
+        "app.post",
+        "Depends",
+        "process_payment",
+        "HTTPException",
+        "str",
+        "HTTPException",
+        "str"
+      ],
+      "calls_with_lines": [
+        {
+          "name": "app.post",
+          "line": 31
+        },
+        {
+          "name": "Depends",
+          "line": 32
+        },
+        {
+          "name": "process_payment",
+          "line": 34
+        },
+        {
+          "name": "HTTPException",
+          "line": 36
+        },
+        {
+          "name": "str",
+          "line": 36
+        },
+        {
+          "name": "HTTPException",
+          "line": 38
+        },
+        {
+          "name": "str",
+          "line": 38
+        }
+      ]
+    },
+    {
+      "name": "get_balance",
+      "file": "app/payment.py",
+      "line": 20,
+      "calls_in_order": [
+        "_balances.get"
+      ],
+      "calls_with_lines": [
+        {
+          "name": "_balances.get",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "name": "charge_card",
+      "file": "app/payment.py",
+      "line": 24,
+      "calls_in_order": [
+        "_balances.get",
+        "InsufficientFundsError",
+        "uuid.uuid4"
+      ],
+      "calls_with_lines": [
+        {
+          "name": "_balances.get",
+          "line": 25
+        },
+        {
+          "name": "InsufficientFundsError",
+          "line": 27
+        },
+        {
+          "name": "uuid.uuid4",
+          "line": 29
+        }
+      ]
+    },
+    {
+      "name": "process_payment",
+      "file": "app/payment.py",
+      "line": 33,
+      "calls_in_order": [
+        "hexdigest",
+        "hashlib.sha256",
+        "encode",
+        "cache.get",
+        "charge_card",
+        "uuid.uuid4",
+        "save_order",
+        "cache.set"
+      ],
+      "calls_with_lines": [
+        {
+          "name": "hexdigest",
+          "line": 34
+        },
+        {
+          "name": "hashlib.sha256",
+          "line": 34
+        },
+        {
+          "name": "encode",
+          "line": 35
+        },
+        {
+          "name": "cache.get",
+          "line": 38
+        },
+        {
+          "name": "charge_card",
+          "line": 42
+        },
+        {
+          "name": "uuid.uuid4",
+          "line": 44
+        },
+        {
+          "name": "save_order",
+          "line": 46
+        },
+        {
+          "name": "cache.set",
+          "line": 57
+        }
+      ]
+    }
+  ],
+  "shared_mutable_state": [
+    {
+      "name": "_store",
+      "file": "app/cache.py",
+      "has_lock_protection": false,
+      "read_lines": [
+        7
+      ],
+      "write_lines": [
+        11
+      ],
+      "read_write_lines": [
+        7,
+        11
+      ]
+    },
+    {
+      "name": "_balances",
+      "file": "app/payment.py",
+      "has_lock_protection": false,
+      "read_lines": [
+        21,
+        25
+      ],
+      "write_lines": [
+        28
+      ],
+      "read_write_lines": [
+        21,
+        25,
+        28
+      ]
+    }
+  ],
+  "idempotency_patterns": [
+    {
+      "function": "process_payment",
+      "file": "app/payment.py",
+      "cache_checked_before_external_call": true,
+      "first_cache_read_line": 38,
+      "first_external_call_line": 42,
+      "first_cache_write_line": 57
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "verification_health_score": 25.0,
+  "verification_health_breakdown": "1 VERIFIED / 4 total findings × 100 = 25.0%",
+  "findings": [
+    {
+      "id": "FH-01",
+      "title": "Duplicate charge on request retry",
+      "hypothesis": "A client that retries a failed or timed-out POST /payment will trigger a second charge_card call because there is no cache lookup before the external call, so the same card is charged twice with no deduplication.",
+      "evidence": [
+        "inventory.json > idempotency_patterns[0]: function=process_payment, cache_checked_before_external_call=false",
+        "inventory.json > idempotency_patterns[0]: first_cache_read_line=null (cache is never read before the external call)",
+        "inventory.json > idempotency_patterns[0]: first_external_call_line=33 (charge_card called at app/payment.py:33)",
+        "inventory.json > idempotency_patterns[0]: first_cache_write_line=48 (cache.set written only after charge, at app/payment.py:48)",
+        "test_coverage_map.json: 0 of 16 tests have covers.retry=true"
+      ],
+      "impact": 5,
+      "likelihood": 4,
+      "verification_status": "VERIFIED",
+      "verification_note": "Fixed in app/payment.py: process_payment() now computes a deterministic idempotency key via hashlib.sha256(user_id:amount:currency) and calls cache.get() before charge_card(). Confirmed by tests/test_verification_gaps.py::test_fh01_no_duplicate_charge_on_retry PASSING. inventory.json now shows cache_checked_before_external_call=true, first_cache_read_line=38, first_external_call_line=42.",
+      "risk_score": 20
+    },
+    {
+      "id": "FH-02",
+      "title": "Race condition on shared balance under concurrent requests",
+      "hypothesis": "Two concurrent payment requests for the same user can both read the same pre-deduction balance from the unprotected _balances dict, pass the funds check, and both write back a reduced balance — effectively allowing a double-spend up to the full account balance.",
+      "evidence": [
+        "inventory.json > shared_mutable_state[1]: name=_balances, file=app/payment.py, has_lock_protection=false",
+        "inventory.json > shared_mutable_state[1]: read_lines=[20, 24] (balance read in get_balance at :20 and in charge_card at :24)",
+        "inventory.json > shared_mutable_state[1]: write_lines=[27] (balance decremented at app/payment.py:27)",
+        "inventory.json > functions[charge_card]: calls_in_order=[_balances.get, InsufficientFundsError, uuid.uuid4] — read and write are non-atomic",
+        "test_coverage_map.json: 0 of 16 tests have covers.concurrency=true"
+      ],
+      "impact": 4,
+      "likelihood": 4,
+      "verification_status": "GAP",
+      "risk_score": 16
+    },
+    {
+      "id": "FH-03",
+      "title": "Card charged with no order record if database write fails",
+      "hypothesis": "If save_order raises an exception after charge_card has already returned a charge_id, the charge is irrecoverable — no order is persisted, no rollback or compensation is performed, and the customer's funds are lost with no record.",
+      "evidence": [
+        "inventory.json > functions[process_payment]: calls_in_order=[charge_card, uuid.uuid4, save_order, cache.set]",
+        "inventory.json > functions[process_payment].calls_with_lines: charge_card at app/payment.py:33, save_order at app/payment.py:37",
+        "inventory.json > functions[save_order]: calls_in_order=[Order, db.add, db.commit, db.refresh] — db.commit (durability point) is at app/database.py:43, after charge_card has already run",
+        "test_coverage_map.json: 0 of 16 tests have covers.partial_failure=true"
+      ],
+      "impact": 5,
+      "likelihood": 2,
+      "verification_status": "GAP",
+      "risk_score": 10
+    },
+    {
+      "id": "FH-04",
+      "title": "Cache store (_store) has no lock protection under concurrency",
+      "hypothesis": "The in-memory _store dict used for idempotency caching has no lock, so concurrent writes can interleave and produce a torn or stale cache entry, undermining whatever idempotency protection cache.set is intended to provide.",
+      "evidence": [
+        "inventory.json > shared_mutable_state[0]: name=_store, file=app/cache.py, has_lock_protection=false",
+        "inventory.json > shared_mutable_state[0]: read_lines=[7] (cache.get reads _store at app/cache.py:7)",
+        "inventory.json > shared_mutable_state[0]: write_lines=[11] (cache.set writes _store at app/cache.py:11)",
+        "test_coverage_map.json: 0 of 16 tests have covers.concurrency=true"
+      ],
+      "impact": 2,
+      "likelihood": 4,
+      "verification_status": "GAP",
+      "risk_score": 8
+    }
+  ]
+}

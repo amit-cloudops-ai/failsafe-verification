@@ -1,0 +1,332 @@
+[
+  {
+    "name": "TestSuccessfulPayment.test_returns_201",
+    "class": "TestSuccessfulPayment",
+    "file": "tests/test_payment.py",
+    "line": 45,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post"
+    ],
+    "covers": {
+      "happy_path": true,
+      "business_error_path": false,
+      "validation": false,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestSuccessfulPayment.test_response_shape",
+    "class": "TestSuccessfulPayment",
+    "file": "tests/test_payment.py",
+    "line": 49,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post",
+      "response.json"
+    ],
+    "covers": {
+      "happy_path": true,
+      "business_error_path": false,
+      "validation": false,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestSuccessfulPayment.test_order_id_prefixed",
+    "class": "TestSuccessfulPayment",
+    "file": "tests/test_payment.py",
+    "line": 59,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post",
+      "response.json",
+      "startswith"
+    ],
+    "covers": {
+      "happy_path": true,
+      "business_error_path": false,
+      "validation": false,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestSuccessfulPayment.test_charge_id_prefixed",
+    "class": "TestSuccessfulPayment",
+    "file": "tests/test_payment.py",
+    "line": 63,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post",
+      "response.json",
+      "startswith"
+    ],
+    "covers": {
+      "happy_path": true,
+      "business_error_path": false,
+      "validation": false,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestSuccessfulPayment.test_balance_decremented",
+    "class": "TestSuccessfulPayment",
+    "file": "tests/test_payment.py",
+    "line": 67,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post",
+      "pytest.approx"
+    ],
+    "covers": {
+      "happy_path": true,
+      "business_error_path": false,
+      "validation": false,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestSuccessfulPayment.test_default_currency_is_usd",
+    "class": "TestSuccessfulPayment",
+    "file": "tests/test_payment.py",
+    "line": 71,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post",
+      "response.json"
+    ],
+    "covers": {
+      "happy_path": true,
+      "business_error_path": false,
+      "validation": false,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestSuccessfulPayment.test_explicit_currency_preserved",
+    "class": "TestSuccessfulPayment",
+    "file": "tests/test_payment.py",
+    "line": 75,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post",
+      "response.json"
+    ],
+    "covers": {
+      "happy_path": true,
+      "business_error_path": false,
+      "validation": false,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestSuccessfulPayment.test_exact_balance_accepted",
+    "class": "TestSuccessfulPayment",
+    "file": "tests/test_payment.py",
+    "line": 79,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post"
+    ],
+    "covers": {
+      "happy_path": true,
+      "business_error_path": false,
+      "validation": false,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestInsufficientFunds.test_returns_402",
+    "class": "TestInsufficientFunds",
+    "file": "tests/test_payment.py",
+    "line": 85,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post"
+    ],
+    "covers": {
+      "happy_path": false,
+      "business_error_path": true,
+      "validation": false,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestInsufficientFunds.test_error_detail_present",
+    "class": "TestInsufficientFunds",
+    "file": "tests/test_payment.py",
+    "line": 89,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post",
+      "response.json"
+    ],
+    "covers": {
+      "happy_path": false,
+      "business_error_path": true,
+      "validation": false,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestInsufficientFunds.test_balance_unchanged_on_failure",
+    "class": "TestInsufficientFunds",
+    "file": "tests/test_payment.py",
+    "line": 93,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post",
+      "pytest.approx"
+    ],
+    "covers": {
+      "happy_path": false,
+      "business_error_path": true,
+      "validation": false,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestInsufficientFunds.test_unknown_user_has_zero_balance",
+    "class": "TestInsufficientFunds",
+    "file": "tests/test_payment.py",
+    "line": 97,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post"
+    ],
+    "covers": {
+      "happy_path": false,
+      "business_error_path": true,
+      "validation": false,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestInputValidation.test_negative_amount_rejected",
+    "class": "TestInputValidation",
+    "file": "tests/test_payment.py",
+    "line": 103,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post"
+    ],
+    "covers": {
+      "happy_path": false,
+      "business_error_path": false,
+      "validation": true,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestInputValidation.test_zero_amount_rejected",
+    "class": "TestInputValidation",
+    "file": "tests/test_payment.py",
+    "line": 107,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post"
+    ],
+    "covers": {
+      "happy_path": false,
+      "business_error_path": false,
+      "validation": true,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestInputValidation.test_missing_user_id_rejected",
+    "class": "TestInputValidation",
+    "file": "tests/test_payment.py",
+    "line": 111,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post"
+    ],
+    "covers": {
+      "happy_path": false,
+      "business_error_path": false,
+      "validation": true,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  },
+  {
+    "name": "TestInputValidation.test_missing_amount_rejected",
+    "class": "TestInputValidation",
+    "file": "tests/test_payment.py",
+    "line": 115,
+    "endpoints": [
+      "/payment"
+    ],
+    "functions": [
+      "client.post"
+    ],
+    "covers": {
+      "happy_path": false,
+      "business_error_path": false,
+      "validation": true,
+      "retry": false,
+      "concurrency": false,
+      "partial_failure": false
+    }
+  }
+]
